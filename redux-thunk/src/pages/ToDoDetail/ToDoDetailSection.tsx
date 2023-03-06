@@ -1,5 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { RootState, AppDispatch } from "../../Store";
+import { useDispatch, useSelector } from "react-redux";
+import { getByIdPost } from "../../actions/PostAction";
 import "./stylesToDoDetail/todoDetailSection.scss";
 
 interface ToDoDetailSectionProps {
@@ -15,21 +18,22 @@ const ToDoDetailSection = ({
   onChangeupDateContent,
   id,
 }: ToDoDetailSectionProps) => {
-  // const queryClient = useQueryClient();
-  // console.log(queryClient);
-
+  const dispatch: AppDispatch = useDispatch();
+  const posts: any = useSelector((state: RootState) => state.posts.data);
+  useEffect(() => {
+    dispatch(getByIdPost(id));
+  }, []);
+  console.log(posts);
   return (
     <>
       {type === "todoDetail" && (
         <div className="todoDetailSectionBox">
-          {/* {isSuccess && (
-            <div key={id} className="todoDetailSection">
-              <div className="todoDetailTitle">{getDataDetail.data.title}</div>
-              <div className="todoDetailConTent">
-                {getDataDetail.data.content}
-              </div>
+          {posts && (
+            <div key={posts.id} className="todoDetailSection">
+              <div className="todoDetailTitle">{posts.title}</div>
+              <div className="todoDetailConTent">{posts.content}</div>
             </div>
-          )} */}
+          )}
         </div>
       )}
 

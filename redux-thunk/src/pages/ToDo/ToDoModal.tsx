@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ToDoModalSection from "./ToDoModalSection";
 import ToDoButton from "./ToDoButton";
-import "./stylesTodo/todoModal.scss";
+import { RootState, AppDispatch } from "../../Store";
+import "./stylesToDo/todoModal.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost } from "../../actions/PostAction";
 
 interface ToDoModalProps {
   handleToDo: (e: React.FormEvent<HTMLButtonElement>) => void;
@@ -14,8 +17,12 @@ const ToDoModal = ({ title, type, handleToDo, content }: ToDoModalProps) => {
   const [addTitle, setAddTitle] = useState("");
   const [addContent, setAddContent] = useState("");
 
+  const dispatch: AppDispatch = useDispatch();
+  let params = { title: addTitle, content: addContent };
   const handleAddToDo = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    dispatch(addPost(params));
+    handleToDo(e);
   };
 
   const onChangeAddTilte = (e: React.ChangeEvent<HTMLInputElement>) => {

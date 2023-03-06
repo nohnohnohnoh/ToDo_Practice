@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./stylesTodo/todoButton.scss";
+import "./stylesToDo/todoButton.scss";
 import ToDoLogOut from "./ToDoLogOut";
 
 interface ToDoButtonProps {

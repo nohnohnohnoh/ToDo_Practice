@@ -6,7 +6,7 @@ import {
 } from "redux";
 import ReduxTunk, { ThunkMiddleware } from "redux-thunk";
 import { combineReducer } from "./reducers/index";
-import { createLogger, ReduxLoggerOptions } from "redux-logger";
+import { createLogger } from "redux-logger";
 
 const initialState = {
   users: {

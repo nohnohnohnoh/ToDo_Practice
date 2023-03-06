@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../ToDo/stylesTodo/todoLogOut.scss";
+import "./stylesToDo/todoLogOut.scss";
 
 interface ToDoLogOutProps {
   handlemodal: (e: React.FormEvent<HTMLButtonElement>) => void;

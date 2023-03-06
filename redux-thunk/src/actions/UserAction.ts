@@ -30,7 +30,7 @@ export const signIn =
         "http://localhost:8080/users/login",
         params
       );
-      return dispatch({ type: "SIGNINSUCCESS", payload: response });
+      dispatch({ type: "SIGNINSUCCESS", payload: response });
     } catch (e) {
       if (isAxiosError(e)) {
         dispatch({ type: "USERFAILURE", error: e.response?.data });

@@ -1,11 +1,19 @@
-import React, { useState, useEffect, ReactNode } from "react";
-import "./stylesTodo/todoModalSection.scss";
+import React, { useEffect } from "react";
+import "./stylesToDo/todoModalSection.scss";
 import { useNavigate, useParams } from "react-router-dom";
+import { RootState, AppDispatch } from "../../Store";
+import { useDispatch, useSelector } from "react-redux";
+import { getPost } from "../../actions/PostAction";
 
 interface ToDoModalSectionProps {
   onChangeAddTilte: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeAddContent: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   type: string;
+}
+
+interface postModal {
+  title: string;
+  id: string;
 }
 
 const ToDoModalSection = ({
@@ -14,23 +22,32 @@ const ToDoModalSection = ({
   type,
 }: ToDoModalSectionProps) => {
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const posts: any = useSelector((state: RootState) => state.posts.data);
+  console.log("post", posts);
+
+  useEffect(() => {
+    dispatch(getPost());
+  }, []);
 
   return (
     <>
       {type === "todo" && (
         <div className="todoSectionBox">
-          {/* <div className="todoSectionList">
-            {isSuccess &&
-              getToDo.data.map(({ title, id }: ToDo) => (
-                <div
-                  key={id}
-                  onClick={() => navigate(`/todos/${id}`)}
-                  className="todoList"
-                >
-                  {title}
-                </div>
-              ))}
-          </div> */}
+          <div className="todoSectionList">
+            {posts &&
+              posts.data.map(({ title, id }: postModal) => {
+                return (
+                  <div
+                    key={id}
+                    onClick={() => navigate(`/todos/${id}`)}
+                    className="todoList"
+                  >
+                    {title}
+                  </div>
+                );
+              })}
+          </div>
         </div>
       )}
       {type === "addtodo" && (
