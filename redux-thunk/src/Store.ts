@@ -2,19 +2,29 @@ import {
   legacy_createStore as createStore,
   applyMiddleware,
   compose,
+  Middleware,
 } from "redux";
-import ReduxTunk from "redux-thunk";
+import ReduxTunk, { ThunkMiddleware } from "redux-thunk";
 import { combineReducer } from "./reducers/index";
+import { createLogger, ReduxLoggerOptions } from "redux-logger";
 
 const initialState = {
   users: {
     isLoggingIn: false,
     data: null,
+    error: null,
   },
-  posts: [{ title: "", content: "" }],
+  posts: {
+    isLoading: false,
+    data: [],
+    error: null,
+  },
 };
-const enhancer = compose(applyMiddleware(ReduxTunk));
 
-const reducer = "reducer";
+const logger: Middleware = createLogger();
+const enhancer = compose(applyMiddleware(ReduxTunk as ThunkMiddleware, logger));
 
-const store = createStore(combineReducer, initialState, enhancer);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export const store = createStore(combineReducer, initialState, enhancer);

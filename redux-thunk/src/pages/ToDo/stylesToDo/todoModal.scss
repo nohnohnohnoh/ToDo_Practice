@@ -1,0 +1,19 @@
+.toDoForm {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  .toDoLogoBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5%;
+    .toDoLogo {
+      font-size: 40px;
+      font-weight: bold;
+      color: #6aafe6;
+    }
+  }
+}

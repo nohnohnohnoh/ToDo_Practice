@@ -1,20 +1,32 @@
+import { signIn, signUp } from "./../actions/UserAction";
 import { produce } from "immer";
-import { Action } from "redux";
+import { AnyAction } from "redux";
 
 const initialState = {
   isLoggingIn: false,
   data: null,
+  error: null,
 };
 
-export const userReducer = (preveState = initialState, action: Action) => {
-  return produce(preveState, (draft) => {
+export const userReducer = (prevState = initialState, action: AnyAction) => {
+  return produce(prevState, (draft) => {
     switch (action.type) {
-      case "LOGIN_REQUEST":
-        draft.isLoggingIn = true;
+      case "SIGNUPSUCCES":
+        draft.data = action.payload;
+        break;
+      case "SIGNINREQUEST":
+        // draft.isLoggingIn = true;
         draft.data = null;
         break;
-      case "LOGIN_SUCCESS":
-        draft.isLoggingIn = false;
+      case "SIGNINSUCCESS":
+        // draft.isLoggingIn = false;
+        draft.data = action.payload;
+        break;
+      case "USERFAILURE":
+        draft.error = action.error;
+        break;
+      default:
+        break;
     }
   });
 };

@@ -1,0 +1,130 @@
+.auth {
+  width: 100vw;
+  height: 100vh;
+  background: url("../../BackGround/cloud.jpg") no-repeat;
+  background-size: cover;
+  .authBox {
+    width: 30%;
+    height: 50%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 2.5% 2.5% 2.5%;
+    box-shadow: 4px 5px 10px rgb(0 0 0 / 50%);
+    border-radius: 25px;
+    .authContent {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      .authLogoBox {
+        height: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .authLogo {
+          font-size: 40px;
+          font-weight: bold;
+          color: #6aafe6;
+        }
+        .activeAuthLogo {
+          font-size: 40px;
+          font-weight: bold;
+          color: blueviolet;
+        }
+      }
+      .authInputBox {
+        width: 100%;
+        height: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        position: relative;
+        input:not([value=""]) ~ .authLabel {
+          top: 22%;
+          left: 15%;
+          font-size: 14px;
+          padding: 0 10px;
+        }
+        .authEmail {
+          width: 70%;
+          height: 40%;
+          border: none;
+          background: rgb(233, 233, 233);
+          transition: border 0.25s ease-in-out;
+          outline: none;
+          padding: 2%;
+          font-size: 18px;
+        }
+        .authEmail:focus ~ .authLabel {
+          top: 22%;
+          left: 15%;
+          font-size: 14px;
+          padding: 0 10px;
+        }
+        .authPassword {
+          width: 70%;
+          height: 40%;
+          border: none;
+          background: rgb(233, 233, 233);
+          transition: border 0.25s ease-in-out;
+          outline: none;
+          padding: 2%;
+          font-size: 18px;
+        }
+        .authPassword:focus ~ .authLabel {
+          top: 22%;
+          left: 15%;
+          font-size: 14px;
+          padding: 0 10px;
+        }
+        .authLabel {
+          position: absolute;
+          top: 50%;
+          left: 17%;
+          transform: translateY(-50%);
+          transition: all 0.25s ease-in-out;
+          font-weight: bold;
+        }
+      }
+      .authButtonBox {
+        width: 100%;
+        height: 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .authButton {
+          width: 30%;
+          height: 50%;
+          background-color: #6aafe6;
+          color: #d4dfe6;
+          border: 3px solid #6aafe6;
+          font-size: 20px;
+        }
+        .activeAuthButton {
+          width: 30%;
+          height: 50%;
+          background-color: blueviolet;
+          color: #fff;
+          border: 3px solid blueviolet;
+          cursor: pointer;
+          font-size: 20px;
+        }
+        .authTypeButton {
+          width: 50%;
+          height: 50%;
+          color: black;
+          background-color: transparent;
+          border: none;
+          font-size: 20px;
+          margin: 2.5% 2.5% 0 2.5%;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
