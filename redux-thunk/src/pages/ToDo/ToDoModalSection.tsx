@@ -25,7 +25,6 @@ const ToDoModalSection = ({
   const dispatch: AppDispatch = useDispatch();
   const posts: any = useSelector((state: RootState) => state.posts.data);
   console.log("post", posts);
-
   useEffect(() => {
     dispatch(getPost());
   }, []);
@@ -36,7 +35,7 @@ const ToDoModalSection = ({
         <div className="todoSectionBox">
           <div className="todoSectionList">
             {posts &&
-              posts.data.map(({ title, id }: postModal) => {
+              posts.map(({ title, id }: postModal) => {
                 return (
                   <div
                     key={id}

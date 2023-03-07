@@ -17,6 +17,7 @@ const initialState = {
   posts: {
     isLoading: false,
     data: [],
+    datailData: [],
     error: null,
   },
 };

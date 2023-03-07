@@ -4,6 +4,7 @@ import { AnyAction } from "redux";
 const initialState = {
   isLoading: false,
   data: <any>[],
+  datailData: <any>[],
   error: null,
 };
 
@@ -21,14 +22,18 @@ export const postReducer = (prevState = initialState, action: AnyAction) => {
         draft.data = action.payload.data;
         break;
       case GETBYIDSUCCESS:
-        draft.data = action.payload.data;
+        draft.datailData = action.payload.data;
         break;
       case ADDPOSTSUCCESS:
         draft.data.push(action.payload.data);
         break;
       case PUTPOSTSUCCESS:
-        draft.data.push(...action.payload.data, action.payload.data);
-        break;
+        return {
+          ...initialState,
+          data: initialState.data.map((data: any) =>
+            data.id === action.payload.id ? action.payload.data : data
+          ),
+        };
       case DELETEPOSTSUCCESS:
         draft.data = action.payload.data;
         break;

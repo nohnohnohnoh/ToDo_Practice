@@ -32,11 +32,13 @@ const ToDoDetailModal = ({
   const handlePutToDo = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(putPost(params, id));
+    navigate("/todos");
   };
 
   const handleDeleteToDo = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(deletePost(id));
+    navigate("/todos");
   };
 
   const onChangeupDateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {

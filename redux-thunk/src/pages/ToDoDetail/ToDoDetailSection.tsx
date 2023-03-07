@@ -19,19 +19,21 @@ const ToDoDetailSection = ({
   id,
 }: ToDoDetailSectionProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const posts: any = useSelector((state: RootState) => state.posts.data);
+  const deatailPosts: any = useSelector(
+    (state: RootState) => state.posts.datailData
+  );
   useEffect(() => {
     dispatch(getByIdPost(id));
   }, []);
-  console.log(posts);
+  console.log(deatailPosts);
   return (
     <>
       {type === "todoDetail" && (
         <div className="todoDetailSectionBox">
-          {posts && (
-            <div key={posts.id} className="todoDetailSection">
-              <div className="todoDetailTitle">{posts.title}</div>
-              <div className="todoDetailConTent">{posts.content}</div>
+          {deatailPosts && (
+            <div key={deatailPosts.id} className="todoDetailSection">
+              <div className="todoDetailTitle">{deatailPosts.title}</div>
+              <div className="todoDetailConTent">{deatailPosts.content}</div>
             </div>
           )}
         </div>
