@@ -1,0 +1,72 @@
+.todoDetailSectionBox {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 2;
+  .todoDetailSection {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .todoDetailTitle {
+      width: 90%;
+      height: 10%;
+      margin: 5%;
+      background: rgb(233, 233, 233);
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    .todoDetailConTent {
+      width: 90%;
+      height: 40%;
+      margin: 5%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      background: rgb(233, 233, 233);
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .updateInputBox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    input {
+      margin: 5%;
+      border: none;
+      outline: none;
+      background: rgb(233, 233, 233);
+      font-size: 20px;
+      font-weight: bold;
+    }
+    textarea {
+      margin: 5%;
+      border: none;
+      outline: none;
+      background: rgb(233, 233, 233);
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 돋움, arial;
+    }
+    .updateTitle {
+      width: 90%;
+      height: 10%;
+    }
+    .updateContent {
+      width: 90%;
+      height: 40%;
+    }
+  }
+}

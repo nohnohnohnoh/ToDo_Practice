@@ -1,0 +1,46 @@
+.todoButtonBox {
+  width: 100%;
+  height: 30%;
+
+  .todoButton {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .addTodoButton {
+      width: 40%;
+      height: 50%;
+      background-color: #6aafe6;
+      color: #d4dfe6;
+      border: 3px solid #6aafe6;
+      font-size: 20px;
+      margin: 2%;
+    }
+
+    .logOutButton {
+      width: 40%;
+      height: 50%;
+      background-color: #6aafe6;
+      color: #d4dfe6;
+      border: 3px solid #6aafe6;
+      font-size: 20px;
+      margin: 2%;
+    }
+  }
+
+  .todoBackBox {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .backButton {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      margin-bottom: 10%;
+    }
+  }
+}
