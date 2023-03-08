@@ -27,11 +27,11 @@ const ToDoDetailModal = ({
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
-  let params = { title: upDateTitle, content: upDateContent };
+  let params = { title: upDateTitle, content: upDateContent, id: id };
 
   const handlePutToDo = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(putPost(params, id));
+    dispatch(putPost(params));
     navigate("/todos");
   };
 

@@ -20,7 +20,7 @@ const ToDoDetailSection = ({
 }: ToDoDetailSectionProps) => {
   const dispatch: AppDispatch = useDispatch();
   const deatailPosts: any = useSelector(
-    (state: RootState) => state.posts.datailData
+    (state: RootState) => state.posts.detailData
   );
   useEffect(() => {
     dispatch(getByIdPost(id));

@@ -1,47 +1,42 @@
-import { produce } from "immer";
-import { AnyAction } from "redux";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getPost,
+  getByIdPost,
+  addPost,
+  deletePost,
+  putPost,
+} from "../actions/PostAction";
 
 const initialState = {
-  isLoading: false,
   data: <any>[],
-  datailData: <any>[],
-  error: null,
+  detailData: null,
+  error: null as any,
 };
 
-export const GETSUCCESS = "GETPOSTSUCCESS";
-export const GETBYIDSUCCESS = "GETBYIDSUCCESS";
-export const ADDPOSTSUCCESS = "ADDPOSTSUCCESS";
-export const PUTPOSTSUCCESS = "PUTPOSTSUCCESS";
-export const DELETEPOSTSUCCESS = "DELETEPOSTSUCCESS";
-export const POSTFAILURE = "POSTFAILURE";
-
-export const postReducer = (prevState = initialState, action: AnyAction) => {
-  return produce(prevState, (draft) => {
-    switch (action.type) {
-      case GETSUCCESS:
-        draft.data = action.payload.data;
-        break;
-      case GETBYIDSUCCESS:
-        draft.datailData = action.payload.data;
-        break;
-      case ADDPOSTSUCCESS:
-        draft.data.push(action.payload.data);
-        break;
-      case PUTPOSTSUCCESS:
+export const postSlice = createSlice({
+  name: "postSlice",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) =>
+    builder
+      .addCase(getPost.fulfilled, (state, action) => {
+        state.data = action.payload.data;
+      })
+      .addCase(getByIdPost.fulfilled, (state, action) => {
+        state.detailData = action.payload.data;
+      })
+      .addCase(addPost.fulfilled, (state, action) => {
+        state.data.unshift(action.payload.data);
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.data = action.payload.data;
+      })
+      .addCase(putPost.fulfilled, (state, action) => {
         return {
           ...initialState,
           data: initialState.data.map((data: any) =>
             data.id === action.payload.id ? action.payload.data : data
           ),
         };
-      case DELETEPOSTSUCCESS:
-        draft.data = action.payload.data;
-        break;
-      case POSTFAILURE:
-        draft.error = action.error;
-        break;
-      default:
-        break;
-    }
-  });
-};
+      }),
+});

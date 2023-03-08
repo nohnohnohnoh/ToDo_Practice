@@ -27,9 +27,9 @@ const AuthModal = ({ handleAuthType, type, title, change }: AuthModalProps) => {
   const handleSignIn = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(signIn(params)).then((res: any) => {
-      if (res.payload.status === 200) {
-        localStorage.setItem("token", res.payload.data.token);
-        alert("LogInSuccEss");
+      if (res.payload.message === "성공적으로 로그인 했습니다") {
+        localStorage.setItem("token", res.payload.token);
+        alert("SIGNINSUCCESS");
         navigate("/todos");
       }
     });
@@ -37,7 +37,11 @@ const AuthModal = ({ handleAuthType, type, title, change }: AuthModalProps) => {
 
   const handleSignUp = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(signUp(params));
+    dispatch(signUp(params)).then((res: any) => {
+      if (res.payload.message === "계정이 성공적으로 생성되었습니다") {
+        alert("SIGNUPSUCCESS");
+      }
+    });
   };
 
   const onActiveButton = () => {

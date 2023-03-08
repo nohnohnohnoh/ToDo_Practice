@@ -7,6 +7,8 @@ const initialState = {
   error: null as any,
 };
 
+const token = "token";
+
 export const userSlice = createSlice({
   name: "userSlice",
   initialState,
@@ -26,6 +28,17 @@ export const userSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(signIn.rejected, (state, action) => {
+        state.error = action.error;
+      })
+      .addCase(signUp.pending, (state, action) => {
+        state.isLogging = true;
+        state.data = null;
+      })
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.isLogging = false;
+        state.data = action.payload;
+      })
+      .addCase(signUp.rejected, (state, action) => {
         state.error = action.error;
       }),
 });
