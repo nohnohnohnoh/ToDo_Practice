@@ -2,13 +2,22 @@ import { signIn, signUp } from "./../actions/UserAction";
 import { produce } from "immer";
 import { AnyAction } from "redux";
 
+interface Type {
+  isLoggingIn: boolean;
+  data: null;
+  error: null;
+}
+
 const initialState = {
   isLoggingIn: false,
   data: null,
   error: null,
 };
 
-export const userReducer = (prevState = initialState, action: AnyAction) => {
+export const userReducer = (
+  prevState: Type = initialState,
+  action: AnyAction
+) => {
   return produce(prevState, (draft) => {
     switch (action.type) {
       case "SIGNUPSUCCES":

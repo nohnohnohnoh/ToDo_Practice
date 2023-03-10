@@ -1,46 +1,154 @@
-# Getting Started with Create React App
+# TypeScript Redux-Thunk
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Typescript 환경에서 실제 api를 redux-thunk 미들웨어를 이용해 상태관리 연습.
 
-## Available Scripts
+### index.ts
 
-In the project directory, you can run:
+```javascript
+import { Provider } from "react-redux";
+import { store } from "./Store";
 
-### `npm start`
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  </React.StrictMode>
+);
+// redux react-redux redux-thunk 연결
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### store.ts
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```javascript
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  compose,
+  Middleware,
+} from "redux";
+import ReduxTunk, { ThunkMiddleware } from "redux-thunk";
+import { combineReducer } from "./reducers/index";
+import { createLogger } from "redux-logger";
 
-### `npm test`
+const initialState = {
+  users: {
+    isLoggingIn: false,
+    data: null,
+    error: null,
+  },
+  posts: {
+    isLoading: false,
+    data: [],
+    datailData: [],
+    error: null,
+  },
+};
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const logger: Middleware = createLogger();
+const enhancer = compose(applyMiddleware(ReduxTunk as ThunkMiddleware, logger));
 
-### `npm run build`
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export const store = createStore(combineReducer, initialState, enhancer);
+// createStore legacy_createStore as createStore로 import
+// ts에서 미들웨어를 읽기위해 Middleware 타입지정 redux-thunk 읽기 위해 ThunkMiddleware 타입지정
+// useDisapatch useSelector를 쓰기위해 type 지정
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Action Reducer
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```javascript
+// action
+import { AnyAction, Action, Dispatch } from "redux";
+import axios, { isAxiosError } from "axios";
 
-### `npm run eject`
+interface PARAMS {
+  email: string;
+  password: string;
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export const signUp =
+  (params: PARAMS) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      // const response = await axios.post
+      dispatch({ type: "SIGNUPSUCCES", payload: response });
+    } catch (e) {
+      if (isAxiosError(e)) {
+        dispatch({ type: "USERFAILURE", error: e.response?.data });
+      }
+    }
+  };
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export const signIn =
+  (params: PARAMS) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      // const response = await axios.post
+      dispatch({ type: "SIGNINSUCCESS", payload: response });
+    } catch (e) {
+      if (isAxiosError(e)) {
+        dispatch({ type: "USERFAILURE", error: e.response?.data });
+      }
+    }
+  };
+// reducer
+import { signIn, signUp } from "./../actions/UserAction";
+import { produce } from "immer";
+import { AnyAction } from "redux";
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+interface Type {
+  isLoggingIn: boolean;
+  data: null;
+  error: null;
+}
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+const initialState = {
+  isLoggingIn: false,
+  data: null,
+  error: null,
+};
 
-## Learn More
+export const userReducer = (
+  prevState: Type = initialState,
+  action: AnyAction
+) => {
+  return produce(prevState, (draft) => {
+    switch (action.type) {
+      case "SIGNUPSUCCES":
+        draft.data = action.payload;
+        break;
+      case "SIGNINREQUEST":
+        draft.isLoggingIn = true;
+        draft.data = null;
+        break;
+      case "SIGNINSUCCESS":
+        draft.isLoggingIn = false;
+        draft.data = action.payload;
+        break;
+      case "USERFAILURE":
+        draft.error = action.error;
+        break;
+      default:
+        break;
+    }
+  });
+};
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### useDispatch useSelcetor
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```javascript
+const users = useSelector((state: RootState) => state.users);
+const dispatch: AppDispatch = useDispatch();
+/// useDispatch useSelcetor 타입지정
+```
+
+## 개선점
+
+- 아직 data에 대한 정확한 타입지정이 미흡.
+- AnyAction으로 action에 타입지정이 아닌 action에 대한 type을 만들고 각 action에 대한 타입 지정.
+- 새로고침하면 상태관리 state가 리셋되는 현상 redux-persist로 개선.

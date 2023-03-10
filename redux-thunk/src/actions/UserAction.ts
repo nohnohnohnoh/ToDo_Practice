@@ -1,7 +1,5 @@
 import { AnyAction, Action, Dispatch } from "redux";
-import axios, { AxiosResponse, isAxiosError } from "axios";
-import { RootState } from "../Store";
-import { ThunkAction } from "redux-thunk";
+import axios, { isAxiosError } from "axios";
 
 interface PARAMS {
   email: string;
@@ -37,12 +35,3 @@ export const signIn =
       }
     }
   };
-
-const signInRequest = (payload: any) => {};
-
-const userFailure = (error: any) => {
-  return {
-    type: "USERFAILURE",
-    error,
-  };
-};
