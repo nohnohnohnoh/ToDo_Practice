@@ -7,10 +7,6 @@ interface PARMS {
   id?: string | undefined;
 }
 
-interface MyKnownError {
-  errorMessage: string;
-}
-
 const token = localStorage.getItem("token");
 
 export const getPost = createAsyncThunk("getPost", async (thunkAPI) => {
@@ -74,19 +70,22 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-export const putPost = createAsyncThunk("putPost", async (params: PARMS) => {
-  try {
-    const { data } = await axios.put(
-      `http://localhost:8080/todos/${params.id}`,
-      params,
-      {
-        headers: { Authorization: token },
+export const putPost = createAsyncThunk(
+  "putPost",
+  async (params: PARMS, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:8080/todos/${params.id}`,
+        params,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      return data;
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return rejectWithValue(e.response?.data);
       }
-    );
-    return data;
-  } catch (e) {
-    // if (isAxiosError(e)) {
-    //   return rejectWithValue(e.response?.data);
-    // }
+    }
   }
-});
+);

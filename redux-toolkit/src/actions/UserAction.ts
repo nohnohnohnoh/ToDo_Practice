@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 interface PARAMS {

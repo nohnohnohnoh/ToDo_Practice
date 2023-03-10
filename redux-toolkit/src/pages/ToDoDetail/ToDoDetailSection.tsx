@@ -5,6 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getByIdPost } from "../../actions/PostAction";
 import "./stylesToDoDetail/todoDetailSection.scss";
 
+interface Test {
+  id: string;
+  content: string;
+  title: string;
+}
+
 interface ToDoDetailSectionProps {
   type: string;
   onChangeupDateTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -19,7 +25,7 @@ const ToDoDetailSection = ({
   id,
 }: ToDoDetailSectionProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const deatailPosts: any = useSelector((state: RootState) => state.posts);
+  const deatailPosts: any = useSelector((state: RootState) => state.posts.data);
   useEffect(() => {
     dispatch(getByIdPost(id));
   }, []);
@@ -28,12 +34,13 @@ const ToDoDetailSection = ({
     <>
       {type === "todoDetail" && (
         <div className="todoDetailSectionBox">
-          {deatailPosts && (
-            <div key={deatailPosts.id} className="todoDetailSection">
-              <div className="todoDetailTitle">{deatailPosts.title}</div>
-              <div className="todoDetailConTent">{deatailPosts.content}</div>
-            </div>
-          )}
+          {deatailPosts &&
+            deatailPosts.map(({ title, content, id }: Test) => (
+              <div key={id} className="todoDetailSection">
+                <div className="todoDetailTitle">{title}</div>
+                <div className="todoDetailConTent">{content}</div>
+              </div>
+            ))}
         </div>
       )}
 

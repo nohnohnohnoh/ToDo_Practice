@@ -3,7 +3,7 @@ import "./stylesToDo/todoModalSection.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState, AppDispatch } from "../../Store";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost } from "../../actions/PostAction";
+import { deletePost, getPost } from "../../actions/PostAction";
 
 interface ToDoModalSectionProps {
   onChangeAddTilte: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -37,13 +37,15 @@ const ToDoModalSection = ({
             {posts &&
               posts.map(({ title, id }: postModal) => {
                 return (
-                  <div
-                    key={id}
-                    onClick={() => navigate(`/todos/${id}`)}
-                    className="todoList"
-                  >
-                    {title}
-                  </div>
+                  <>
+                    <div
+                      key={id}
+                      onClick={() => navigate(`/todos/${id}`)}
+                      className="todoList"
+                    >
+                      {title}
+                    </div>
+                  </>
                 );
               })}
           </div>

@@ -1,46 +1,155 @@
-# Getting Started with Create React App
+# TypeScript Redux-toolkit.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Typescript 환경에서 실제 api를 redux-thunk 미들웨어를 이용해 상태관리 연습.
 
-## Available Scripts
+### index.ts
 
-In the project directory, you can run:
+```javascript
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import Router from "./Router";
+import store from "./Store";
 
-### `npm start`
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  </React.StrictMode>
+);
+// redux react-redux redux-toolkit 연결
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### store.ts
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```javascript
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { combineReducer } from "./reducers/index";
+import { createLogger } from "redux-logger";
 
-### `npm test`
+const logger = createLogger();
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-### `npm run build`
+const store = configureStore({
+  reducer: combineReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  devTools: process.env.NODE_ENV !== "production",
+});
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export default store;
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Action Reducer
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```javascript
+// action
+import axios, { isAxiosError } from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-### `npm run eject`
+interface PARAMS {
+  email: string;
+  password: string;
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export const signIn = createAsyncThunk(
+  "SIGNIN",
+  async (params: PARAMS, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/users/login",
+        params
+      );
+      return response.data;
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return rejectWithValue(e.response?.data);
+      }
+    }
+  }
+);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export const signUp = createAsyncThunk(
+  "SIGNUP",
+  async (params: PARAMS, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/users/create",
+        params
+      );
+      return response.data;
+    } catch (e) {
+      if (isAxiosError(e)) {
+        return rejectWithValue(e.response?.data);
+      }
+    }
+  }
+);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+// reducer
+import { createSlice } from "@reduxjs/toolkit";
+import { signIn, signUp } from "../actions/UserAction";
+import { PayloadAction } from "@reduxjs/toolkit";
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+type UserSlce = {
+  isLogging: boolean,
+  data: any,
+  error: any,
+};
 
-## Learn More
+const initialState: UserSlce = {
+  isLogging: false,
+  data: null,
+  error: null,
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+type Error = {
+  error: any,
+};
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export const userSlice = createSlice({
+  name: "userSlice",
+  initialState,
+  reducers: {
+    logOut(state) {
+      state.data = null;
+    },
+  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(signIn.pending, (state) => {
+        state.isLogging = true;
+        state.data = null;
+      })
+      .addCase(signIn.fulfilled, (state, action: PayloadAction<UserSlce>) => {
+        state.isLogging = false;
+        state.data = action.payload;
+      })
+      .addCase(signIn.rejected, (state, action: Error) => {
+        state.error = action.error;
+      })
+      .addCase(signUp.pending, (state) => {
+        state.isLogging = true;
+        state.data = null;
+      })
+      .addCase(signUp.fulfilled, (state, action: PayloadAction<UserSlce>) => {
+        state.isLogging = false;
+        state.data = action.payload;
+      })
+      .addCase(signUp.rejected, (state, action: Error) => {
+        state.error = action.error;
+      }),
+});
+```
+
+## 개선점 및 느낀점
+
+- redux-thunk에 비해서 설치해야 하는 라이브러리도 적고 action을 생성 안해도 된다는 점에서 코드량이 많이 줄었다는 걸 느낌.
+- API에 대한 정확한 data 타입 지정 미흡.
+- error 처리에 대한 정확한 타입 지정 미흡.
+- rejectWithValue에 대한 ts에러.
