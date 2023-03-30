@@ -1,10 +1,24 @@
 import React from "react";
-import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import ToDoList from "./components/ToDoList";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { darkMode } from "./atom";
+import { darkTheme, lightTheme } from "./styles/theme";
 
-const Test = styled.div``;
+const GlobalStyle = createGlobalStyle`
+`;
 
 function App() {
-  return <Test>app</Test>;
+  const dark = useRecoilValue(darkMode);
+  return (
+    <>
+      <ThemeProvider theme={dark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <ToDoList />
+      </ThemeProvider>
+    </>
+  );
 }
 
 export default App;
